@@ -1,9 +1,11 @@
 {% load static %}
 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Obituaries</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -23,66 +25,141 @@
             color: #007BFF;
         }
 
-        table {
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columns */
+            gap: 20px; /* Space between items */
             width: 100%;
-            max-width: 1000px;
-            border-collapse: collapse;
-            margin: 20px 0;
+            max-width: 1200px; /* Adjust as needed */
+            padding: 20px;
+        }
+
+        .grid-item {
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        th, td {
             padding: 15px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
         }
 
-        th {
-            background-color: #007BFF;
-            color: white;
+        .grid-item h2 {
+            font-size: 1.5em;
+            color: #007BFF;
+            margin-bottom: 10px;
+        }
+
+        .grid-item p {
+            margin: 10px 0;
+        }
+
+        .read-more {
+            color: #007BFF;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
             font-weight: bold;
         }
 
-        td {
-            background-color: #f9f9f9;
-        }
-
-        tr:nth-child(even) td {
-            background-color: #f1f1f1;
-        }
-
-        tr:hover td {
-            background-color: #e1e1e1;
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
     <h1>Obituaries</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Date of Birth</th>
-                <th>Date of Death</th>
-                <th>Content</th>
-                <th>Author</th>
-                <th>Submission Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for obituary in obituaries %}
-                <tr>
-                    <td>{{ obituary.name }}</td>
-                    <td>{{ obituary.date_of_birth }}</td>
-                    <td>{{ obituary.date_of_death }}</td>
-                    <td>{{ obituary.content }}</td>
-                    <td>{{ obituary.author }}</td>
-                    <td>{{ obituary.submission_date }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="grid-container">
+        {% for obituary in obituaries %}
+            <div class="grid-item">
+                <h2>{{ obituary.name }}</h2>
+                <p><strong>Submission Date:</strong> {{ obituary.submission_date }}</p>
+                <p><strong>Author:</strong> {{ obituary.author }}</p>
+                <a href="#" class="read-more" data-content="{{ obituary.content }}" data-name="{{ obituary.name }}" data-date_of_birth="{{ obituary.date_of_birth }}" data-date_of_death="{{ obituary.date_of_death }}" data-author="{{ obituary.author }}" data-submission_date="{{ obituary.submission_date }}">Read More</a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modal-name"></h2>
+            <p><strong>Date of Birth:</strong> <span id="modal-date_of_birth"></span></p>
+            <p><strong>Date of Death:</strong> <span id="modal-date_of_death"></span></p>
+            <p><strong>Content:</strong></p>
+            <p id="modal-content"></p>
+            <p><strong>Author:</strong> <span id="modal-author"></span></p>
+            <p><strong>Submission Date:</strong> <span id="modal-submission_date"></span></p>
+        </div>
+    </div>
+
+    <script>
+        // Get modal element
+        var modal = document.getElementById("myModal");
+
+        // Get close button
+        var closeBtn = document.getElementsByClassName("close")[0];
+
+        // Get all "Read More" links
+        var readMoreLinks = document.querySelectorAll(".read-more");
+
+        // Open modal with content
+        readMoreLinks.forEach(function(link) {
+            link.addEventListener("click", function(e) {
+                e.preventDefault();
+                var content = link.getAttribute("data-content");
+                document.getElementById("modal-name").innerText = link.getAttribute("data-name");
+                document.getElementById("modal-date_of_birth").innerText = link.getAttribute("data-date_of_birth");
+                document.getElementById("modal-date_of_death").innerText = link.getAttribute("data-date_of_death");
+                document.getElementById("modal-content").innerText = content;
+                document.getElementById("modal-author").innerText = link.getAttribute("data-author");
+                document.getElementById("modal-submission_date").innerText = link.getAttribute("data-submission_date");
+                modal.style.display = "block";
+            });
+        });
+
+        // Close modal when user clicks on close button
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // Close modal when user clicks outside of the modal
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>

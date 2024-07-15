@@ -1,6 +1,7 @@
+# obituaries/views.py
 from django.shortcuts import render, redirect
 from .models import Obituary
-from .forms import ObituaryForm
+from .form import ObituaryForm
 
 def submit_obituary(request):
     if request.method == 'POST':

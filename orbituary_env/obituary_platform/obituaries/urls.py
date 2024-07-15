@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import submit_obituary, view_obituaries
+from . import views
 
 urlpatterns = [
-    path('submit/', submit_obituary, name='submit_obituary'),
-    path('view/', view_obituaries, name='view_obituaries'),
+    path('submit/', views.submit_obituary, name='submit_obituary'),
+    path('', views.view_obituaries, name='view_obituaries'),
 ]
