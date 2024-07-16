@@ -108,6 +108,9 @@
 </head>
 <body>
     <h1>Obituaries</h1>
+<a href="https://twitter.com/intent/tweet?text={{ obituary.name }}%20{{ request.build_absolute_uri }}" target="_blank">Share on Twitter</a>
+<a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">Share on Facebook</a>
+
     <div class="grid-container">
         {% for obituary in obituaries %}
             <div class="grid-item">
