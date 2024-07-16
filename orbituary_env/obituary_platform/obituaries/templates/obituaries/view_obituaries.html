@@ -104,13 +104,35 @@
             text-decoration: none;
             cursor: pointer;
         }
+        .social-links {
+            margin-bottom: 20px;
+        }
+
+        .social-links a {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 15px;
+            margin: 0 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .social-links a:hover {
+            background-color: #0056b3;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
     </style>
 </head>
 <body>
     <h1>Obituaries</h1>
-<a href="https://twitter.com/intent/tweet?text={{ obituary.name }}%20{{ request.build_absolute_uri }}" target="_blank">Share on Twitter</a>
-<a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">Share on Facebook</a>
-
+    <div class="social-links">
+        <a href="https://twitter.com/intent/tweet?text=Check%20out%20the%20latest%20obituaries%20at%20{{ request.build_absolute_uri }}" target="_blank">Share on Twitter</a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">Share on Facebook</a>
+    </div>
     <div class="grid-container">
         {% for obituary in obituaries %}
             <div class="grid-item">
